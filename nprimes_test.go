@@ -29,18 +29,29 @@ func TestNPrimes(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			assert.EqualValues(test.output, NPrimes(test.input))
+			result := NPrimes(test.input)
+			assert.EqualValues(test.output, onlyPrimesAsInts(result))
 		})
 	}
 }
 
-var benchResult []int
+var benchResult []Number
 
 func BenchmarkNPrimes(b *testing.B) {
 	const excessivelyLargeNPrimes = 125_000
-	var r []int
+	var r []Number
 	for n := 0; n < b.N; n++ {
 		r = NPrimes(excessivelyLargeNPrimes)
 	}
 	benchResult = r
+}
+
+func onlyPrimesAsInts(nums []Number) []int {
+	primes := []int{}
+	for _, num := range nums {
+		if num.IsPrime {
+			primes = append(primes, num.Number)
+		}
+	}
+	return primes
 }
