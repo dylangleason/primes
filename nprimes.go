@@ -16,7 +16,9 @@ func NPrimes(n int) []int {
 	// Starting at prime number 2, for each p, remove all
 	// non-primes. Stop processing when p^2 exceeds N.
 	for p := 2; p*p <= n; p++ {
-		// TODO(dylangleason): implement non-prime removal logic
+		if primes[p] {
+			removeNonPrime(p, n, primes)
+		}
 	}
 
 	// Add each valid prime to the numbers array. Note that we
@@ -33,4 +35,28 @@ func NPrimes(n int) []int {
 	}
 
 	return nums
+}
+
+// removeNonPrime will set all indexes corresponding to numbers in
+// range (n, max] to false, indicating those numbers as non-prime. A
+// non-prime is each successive increment of the given number, not
+// including the number itself.
+//
+// Example: num = 2, max = 10
+//
+// nonPrime = 2 * 2 = 4      NOTE: initialize to n^2 because we don't count n itself
+// primes[nonPrime] = false
+//
+// nonPrime = 4 + 2 = 6
+// primes[6] = false
+//
+// nonPrime = 6 + 2 = 8
+// primes[nonPrime] = false
+//
+// nonPrime = 8 + 2 = 10
+// primes[nonPrime] = false
+func removeNonPrime(num, max int, primes []bool) {
+	for nonPrime := num * num; nonPrime <= max; nonPrime += num {
+		primes[nonPrime] = false
+	}
 }
