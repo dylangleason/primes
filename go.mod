@@ -1,4 +1,4 @@
-module github.com/dylangleason/nprimes
+module github.com/dylangleason/primes
 
 go 1.20
 

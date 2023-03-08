@@ -1,4 +1,4 @@
-package nprimes
+package primes
 
 // Number is a simple wrapper for an integer type that also indicates
 // whether the given number is prime or not, which can be useful for

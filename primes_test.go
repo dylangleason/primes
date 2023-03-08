@@ -1,4 +1,4 @@
-package nprimes
+package primes
 
 import (
 	"testing"
