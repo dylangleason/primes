@@ -33,3 +33,14 @@ func TestNPrimes(t *testing.T) {
 		})
 	}
 }
+
+var benchResult []int
+
+func BenchmarkNPrimes(b *testing.B) {
+	const excessivelyLargeNPrimes = 125_000
+	var r []int
+	for n := 0; n < b.N; n++ {
+		r = NPrimes(excessivelyLargeNPrimes)
+	}
+	benchResult = r
+}
