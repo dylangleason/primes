@@ -8,10 +8,10 @@ type Number struct {
 	IsPrime bool
 }
 
-// NPrimes will generate N primes as an array of integers using the
-// "Sieve of Eratosthenes" algorithm for efficient prime number
-// generation.
-func NPrimes(n int) []Number {
+// PrimesUpTo will generate an array of integers up to a maximum
+// number N using the "Sieve of Eratosthenes" algorithm for efficient
+// prime number generation.
+func PrimesUpTo(n int) []Number {
 	// Create a range of boolean values indexed from 2 to N+1, in
 	// order to keep track of those that are prime. Note that this
 	// makes indexing 2-N easier when calculating primes, but it

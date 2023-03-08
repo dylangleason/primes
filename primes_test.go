@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNPrimes(t *testing.T) {
+func TestPrimesUpTo(t *testing.T) {
 	tests := map[string]struct {
 		input  int
 		output []int
@@ -29,7 +29,7 @@ func TestNPrimes(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			result := NPrimes(test.input)
+			result := PrimesUpTo(test.input)
 			assert.EqualValues(test.output, onlyPrimesAsInts(result))
 		})
 	}
@@ -41,7 +41,7 @@ func BenchmarkNPrimes(b *testing.B) {
 	const excessivelyLargeNPrimes = 125_000
 	var r []Number
 	for n := 0; n < b.N; n++ {
-		r = NPrimes(excessivelyLargeNPrimes)
+		r = PrimesUpTo(excessivelyLargeNPrimes)
 	}
 	benchResult = r
 }
