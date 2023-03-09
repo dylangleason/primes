@@ -10,7 +10,8 @@ type Number struct {
 }
 
 // NPrimes should use an incremental sieve. I tried to follow this but
-// couldn't quite figure out what was being done:
+// couldn't quite figure out what was being done. It does appear that
+// the use of a lazy or infinite sequence is required.
 // https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 func NPrimes(n int) []Number {
 	primes := make([]Number, 0, n)
@@ -26,7 +27,9 @@ func NPrimes(n int) []Number {
 		// This maximum condition isn't correct, just faking
 		// it here. While this will produce functionally
 		// correct results, it's much too slow for large
-		// primes. The benchmark test will time out.
+		// primes. I also tried faking this using a logarthmic
+		// function, but that also did not work. The benchmark
+		// test will time out in either case.
 		max := n * n
 
 		// TODO: hold each composite for the given number so
