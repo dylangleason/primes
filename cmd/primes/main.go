@@ -39,8 +39,8 @@ func readPrime(reader *bufio.Reader) (int, error) {
 }
 
 func printTitle() {
-	fmt.Printf("\nSieve of Eratosothenes\n")
-	fmt.Printf("----------------------\n\n")
+	c := color.New(color.FgHiWhite).Add(color.Underline).Add(color.Bold)
+	c.Printf("\nPrime Number Generator\n\n")
 }
 
 func printPrimes(p []primes.Number) {
