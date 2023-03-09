@@ -4,8 +4,48 @@ package primes
 // whether the given number is prime or not, which can be useful for
 // display purposes.
 type Number struct {
-	Number  int
-	IsPrime bool
+	Number     int
+	IsPrime    bool
+	Composites []int
+}
+
+// NPrimes should use an incremental sieve. I tried to follow this but
+// couldn't quite figure out what was being done:
+// https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
+func NPrimes(n int) []Number {
+	primes := make([]Number, 0, n)
+
+	// Use a set to keep track of numbers containing
+	// composite numbers, aka not prime.
+	composites := make(map[int]struct{})
+
+	number := 2
+	count := 0
+
+	for len(primes) < n {
+		// This maximum condition isn't correct, just faking
+		// it here. While this will produce functionally
+		// correct results, it's much too slow for large
+		// primes. The benchmark test will time out.
+		max := n * n
+
+		// TODO: hold each composite for the given number so
+		// they can be used in the table later.
+
+		calcComposites(number, max, func(composite int) {
+			composites[composite] = struct{}{}
+			count++
+		})
+
+		if _, found := composites[number]; !found {
+			primes = append(primes, Number{Number: number, IsPrime: true})
+		}
+
+		count = 0
+		number++
+	}
+
+	return primes
 }
 
 // PrimesUpTo will generate an array of integers up to a maximum
@@ -25,7 +65,9 @@ func PrimesUpTo(n int) []Number {
 	// non-primes. Stop processing when p^2 exceeds N.
 	for p := 2; p*p <= n; p++ {
 		if primes[p].IsPrime {
-			removeNonPrime(p, n, primes)
+			calcComposites(p, n, func(composite int) {
+				primes[composite].IsPrime = false
+			})
 		}
 	}
 
@@ -35,10 +77,9 @@ func PrimesUpTo(n int) []Number {
 	return primes[2:]
 }
 
-// removeNonPrime will set all indexes corresponding to numbers in
-// range (n, max] to false, indicating those numbers as non-prime. A
-// non-prime is each successive increment of the given number, not
-// including the number itself.
+// calcComposites will compute a sequence of non-prime numbers in
+// range (n, max]. A non-prime is each successive increment of the
+// given number, not including the number itself.
 //
 // Example: num = 2, max = 10
 //
@@ -53,8 +94,8 @@ func PrimesUpTo(n int) []Number {
 //
 // nonPrime = 8 + 2 = 10
 // primes[nonPrime] = false
-func removeNonPrime(num, max int, primes []Number) {
+func calcComposites(num, max int, callback func(nonPrime int)) {
 	for nonPrime := num * num; nonPrime <= max; nonPrime += num {
-		primes[nonPrime].IsPrime = false
+		callback(nonPrime)
 	}
 }
