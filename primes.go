@@ -57,7 +57,7 @@ func PrimesUpTo(n int) []Number {
 	// makes indexing 2-N easier when calculating primes, but it
 	// does mean that index 0 (p=1) will go unused.
 	primes := make([]Number, n+1)
-	for i := 0; i < n; i++ {
+	for i := 0; i <= n; i++ {
 		primes[i] = Number{Number: i, IsPrime: true}
 	}
 
@@ -73,8 +73,8 @@ func PrimesUpTo(n int) []Number {
 
 	// zero out first two elements, as they are not needed, before
 	// reslicing, as both elements to allow garbage collection
-	primes[0], primes[1] = Number{}, Number{}
-	return primes[2:]
+	primes[0] = Number{}
+	return primes[1:]
 }
 
 // calcComposites will compute a sequence of non-prime numbers in

@@ -11,7 +11,7 @@ clean:
 	docker image rm $(IMAGE)
 
 run:
-	docker run --rm $(IMAGE)
+	docker run -it --rm $(IMAGE)
 
 test:
 	docker run --rm $(IMAGE) /usr/local/go/bin/go test -v
