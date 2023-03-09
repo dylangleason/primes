@@ -41,15 +41,15 @@ func TestPrimesUpTo(t *testing.T) {
 		input  int
 		output []int
 	}{
-		"10 primes": {
+		"Up to 10": {
 			input:  10,
 			output: []int{2, 3, 5, 7},
 		},
-		"25 primes": {
+		"Up to 25": {
 			input:  25,
 			output: []int{2, 3, 5, 7, 11, 13, 17, 19, 23},
 		},
-		"50 primes": {
+		"Up to 50": {
 			input:  50,
 			output: []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47},
 		},
