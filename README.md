@@ -39,11 +39,11 @@ make bench
 ## Pros
 
 - I think the classic sieve solution is well commented and easy to reason about.
-- I used a test driven development approach to validate each step and test my understanding.
-- Use of `Number` wrapper struct provides some metadata that allowed me to decouple presentation from logic.
+- I used a test driven development approach for prime number generation to validate each step and test my understanding.
+- Use of `Number` wrapper struct provides some metadata that allowed me to decouple presentation from logic in the case of displaing `PrimesUpTo`, though that wasn't relevant to the original problem description.
 
 ## Cons
 
-- I could not generate the desired multiplication table output since I could not come up withthe Incremental Sieve solution on my own
+- I had to generate the multiplication table output using my sub-standard `NPrimes` implementation, which isn't a true incremental sieve
 - Go does not support the notion of a lazy / infinite sequence so I got stuck trying to find a solution using primitives for the latter
-- Related to the above, without using infinite sequences, in order to produce more performant output I would need to introduce tighter coupling between the algorithm and the printing routines.
+- Console output for table probably should have been built using a StringBuilder so I could test multiplication table output via unit tests

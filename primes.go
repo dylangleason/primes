@@ -32,9 +32,6 @@ func NPrimes(n int) []Number {
 		// test will time out in either case.
 		max := n * n
 
-		// TODO: hold each composite for the given number so
-		// they can be used in the table later.
-
 		calcComposites(number, max, func(composite int) {
 			composites[composite] = struct{}{}
 			count++
@@ -76,7 +73,7 @@ func PrimesUpTo(n int) []Number {
 
 	// zero out first two elements, as they are not needed, before
 	// reslicing, as both elements to allow garbage collection
-	primes[0] = Number{}
+	primes[0], primes[1] = Number{}, Number{}
 	return primes[1:]
 }
 
