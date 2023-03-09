@@ -14,13 +14,17 @@ You can use the Dockerfile to build and execute the program thusly:
 make
 ```
 
+Make sure to use a terminal emulator that supports [ANSI Colors](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors), as the printed primes are indicated in green color.
+
 ## Running The Tests
 
-You can run the unit tests and the bench mark tests using the following commands, respectively:
+You can run the unit tests using the following:
 
 ```console
 make test
 ```
+
+Benchmark tests can also be run for the `PrimesUpTo` function:
 
 ```console
 make bench
