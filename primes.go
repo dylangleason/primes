@@ -74,7 +74,7 @@ func PrimesUpTo(n int) []Number {
 	// zero out first two elements, as they are not needed, before
 	// reslicing, as both elements to allow garbage collection
 	primes[0], primes[1] = Number{}, Number{}
-	return primes[1:]
+	return primes[2:]
 }
 
 // calcComposites will compute a sequence of non-prime numbers in
