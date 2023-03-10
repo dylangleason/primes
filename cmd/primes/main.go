@@ -116,10 +116,11 @@ func printFirstNPrimesTable(count int) {
 
 	// This could probably be made a more efficient O(n) using an
 	// offset..
-	for i := 0; i < len(p); i++ {
+	numPrimes := len(p)
+	for i := 0; i < numPrimes; i++ {
 		col := p[i].Number
 		green.Printf("%d\t", col)
-		for j := 0; j < len(p); j++ {
+		for j := 0; j < numPrimes; j++ {
 			red.Printf("%d\t", col*p[j].Number)
 		}
 		fmt.Println()

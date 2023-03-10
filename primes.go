@@ -4,9 +4,8 @@ package primes
 // whether the given number is prime or not, which can be useful for
 // display purposes.
 type Number struct {
-	Number     int
-	IsPrime    bool
-	Composites []int
+	Number  int
+	IsPrime bool
 }
 
 // NPrimes should use an incremental sieve. I tried to follow this but
