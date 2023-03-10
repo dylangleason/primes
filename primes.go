@@ -26,9 +26,10 @@ func NPrimes(n int) []Number {
 		// This maximum condition isn't correct, just faking
 		// it here. While this will produce functionally
 		// correct results, it's much too slow for large
-		// primes. I also tried faking this using a logarthmic
-		// function, but that also did not work. The benchmark
-		// test will time out in either case.
+		// primes. I also tried a logarithmic function so that
+		// the max would grow at an asymptotic rate, but that
+		// also was very slow. The benchmark test will time
+		// out in either case.
 		max := n * n
 
 		calcComposites(number, max, func(composite int) {
