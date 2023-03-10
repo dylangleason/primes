@@ -1,8 +1,8 @@
 IMAGE = "primes:latest"
 
-default: build run
+.PHONY: build clean run test bench
 
-.PHONY: build clean run test
+default: build run
 
 build:
 	docker build -t $(IMAGE) .
