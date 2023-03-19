@@ -8,44 +8,17 @@ type Number struct {
 	IsPrime bool
 }
 
-// NPrimes should use an incremental sieve. I tried to follow this but
-// couldn't quite figure out what was being done. It does appear that
-// the use of a lazy or infinite sequence is required.
+// NPrimes impelments an incremental sieve. See the following:
 // https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 func NPrimes(n int) []Number {
-	primes := make([]Number, 0, n)
+	nums := []Number{}
 
-	// Use a set to keep track of numbers containing
-	// composite numbers, aka not prime.
-	composites := make(map[int]struct{})
-
-	number := 2
-	count := 0
-
-	for len(primes) < n {
-		// This maximum condition isn't correct, just faking
-		// it here. While this will produce functionally
-		// correct results, it's much too slow for large
-		// primes. I also tried a logarithmic function so that
-		// the max would grow at an asymptotic rate, but that
-		// also was very slow. The benchmark test will time
-		// out in either case.
-		max := n * n
-
-		calcComposites(number, max, func(composite int) {
-			composites[composite] = struct{}{}
-			count++
-		})
-
-		if _, found := composites[number]; !found {
-			primes = append(primes, Number{Number: number, IsPrime: true})
-		}
-
-		count = 0
-		number++
+	gen := generatePrime()
+	for i := 0; i < n; i++ {
+		nums = append(nums, Number{Number: <-gen, IsPrime: true})
 	}
 
-	return primes
+	return nums
 }
 
 // PrimesUpTo will generate an array of integers up to a maximum
@@ -62,7 +35,7 @@ func PrimesUpTo(n int) []Number {
 	}
 
 	// Starting at prime number 2, for each p, remove all
-	// non-primes. Stop processing when p^2 exceeds N.
+	// composites. Stop processing when p^2 exceeds N.
 	for p := 2; p*p <= n; p++ {
 		if primes[p].IsPrime {
 			calcComposites(p, n, func(composite int) {
@@ -77,9 +50,67 @@ func PrimesUpTo(n int) []Number {
 	return primes[2:]
 }
 
-// calcComposites will compute a sequence of non-prime numbers in
-// range (n, max]. A non-prime is each successive increment of the
-// given number, not including the number itself.
+// generatePrime uses channels to lazily compute an unbounded number
+// of primes, returning a send channel of type int
+func generatePrime() <-chan int {
+	const firstPrime = 2
+
+	result := make(chan int)
+	composites := make(map[int][]int)
+
+	go func() {
+		defer close(result)
+
+		for candidate := firstPrime; ; candidate++ {
+			// Check to see if the current candidate is in
+			// the composites table. If not, the candidate
+			// is a prime number.
+			factors, found := composites[candidate]
+			if !found {
+				result <- candidate
+				// Store the prime number as a factor for the first
+				// known multiple in a new array, which is the
+				// product of the prime multiplied by itself.
+				composites[candidate*candidate] = []int{candidate}
+				continue
+			}
+
+			// Otherwise, the candidate is a known
+			// composite or multiple found in the
+			// composites table. Now consider all of the
+			// factors seen thus far for the composite to
+			// determine additional multiples to mark as
+			// composite.
+			for _, factor := range factors {
+				// For each factor, the next multiple to mark as composite
+				// is the factor plus the candidate itself.
+				next := candidate + factor
+
+				// If the composite already exists, append the
+				// new factor, otherwise create a new array for this
+				// composite including the factor.
+				if _, found := composites[next]; found {
+					composites[next] = append(composites[next], factor)
+				} else {
+					composites[next] = []int{factor}
+				}
+			}
+
+			// Once done, remove the candidate to reduce
+			// space complexity since we only need to keep
+			// track of multiples for the next candidate
+			// (i.e. lazily)
+			delete(composites, candidate)
+		}
+	}()
+
+	return result
+}
+
+// calcComposites will compute a sequence of composite
+// (i.e. non-prime) numbers in range (n, max]. A composite is each
+// successive increment of the given number, not including the number
+// itself.
 //
 // Example: num = 2, max = 10
 //
